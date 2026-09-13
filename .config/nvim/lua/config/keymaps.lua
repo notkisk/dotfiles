@@ -1,8 +1,8 @@
 -- Keymaps are automatically loaded on the VeryLazy event
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
-vim.keymap.set("n", "<Tab>", "<cmd>bnext<CR>", {desc = "Next buffer"})
-vim.keymap.set("n", "<S-Tab>", "<cmd>bprevious<CR>", {desc = "Previous buffer"})
+vim.keymap.set("n", "<Tab>", "<cmd>bnext<CR>", { desc = "Next buffer" })
+vim.keymap.set("n", "<S-Tab>", "<cmd>bprevious<CR>", { desc = "Previous buffer" })
 vim.keymap.set("n", "<C-Tab>", "<C-w>w", { desc = "Next window" })
 vim.keymap.set("n", "<C-S-Tab>", "<C-w>W", { desc = "Previous window" })
 vim.keymap.set("n", "H", "^", { desc = "Beginning of line" })
@@ -19,8 +19,7 @@ vim.keymap.set("n", "<leader>rw", function()
   local replacement = vim.fn.input("Replace '" .. word .. "' with: ")
 
   if replacement ~= "" then
-    vim.cmd("%s/\\V" .. vim.fn.escape(word, "/") .. "/" ..
-      vim.fn.escape(replacement, "/") .. "/g")
+    vim.cmd("%s/\\V" .. vim.fn.escape(word, "/") .. "/" .. vim.fn.escape(replacement, "/") .. "/g")
   end
 end, { desc = "Word → current file" })
 
@@ -30,10 +29,15 @@ vim.keymap.set("n", "<leader>rW", function()
   local replacement = vim.fn.input("Replace '" .. word .. "' with: ")
 
   if replacement ~= "" then
-    vim.cmd("silent! grep -R -l --exclude-dir=.git " ..
-      vim.fn.shellescape(word) .. " . | xargs sed -i 's/" ..
-      vim.fn.escape(word, "\\/") .. "/" ..
-      vim.fn.escape(replacement, "\\/") .. "/g'")
+    vim.cmd(
+      "silent! grep -R -l --exclude-dir=.git "
+        .. vim.fn.shellescape(word)
+        .. " . | xargs sed -i 's/"
+        .. vim.fn.escape(word, "\\/")
+        .. "/"
+        .. vim.fn.escape(replacement, "\\/")
+        .. "/g'"
+    )
   end
 end, { desc = "Word → whole project" })
 
@@ -51,8 +55,7 @@ vim.keymap.set("n", "<leader>rs", function()
 
   local replacement = vim.fn.input("Replace with: ")
 
-  vim.cmd("%s/\\V" .. vim.fn.escape(search, "/") .. "/" ..
-    vim.fn.escape(replacement, "/") .. "/g")
+  vim.cmd("%s/\\V" .. vim.fn.escape(search, "/") .. "/" .. vim.fn.escape(replacement, "/") .. "/g")
 end, { desc = "Search → current file" })
 
 -- Search and replace across project
@@ -70,9 +73,24 @@ vim.keymap.set("n", "<leader>rS", function()
   local replacement = vim.fn.input("Replace with: ")
 
   if replacement ~= "" then
-    vim.cmd("silent! grep -R -l --exclude-dir=.git " ..
-      vim.fn.shellescape(search) .. " . | xargs sed -i 's/" ..
-      vim.fn.escape(search, "\\/") .. "/" ..
-      vim.fn.escape(replacement, "\\/") .. "/g'")
+    vim.cmd(
+      "silent! grep -R -l --exclude-dir=.git "
+        .. vim.fn.shellescape(search)
+        .. " . | xargs sed -i 's/"
+        .. vim.fn.escape(search, "\\/")
+        .. "/"
+        .. vim.fn.escape(replacement, "\\/")
+        .. "/g'"
+    )
   end
 end, { desc = "Search → whole project" })
+
+local map = vim.keymap.set
+
+-- Movement
+map({ "n", "x" }, "m", "j", { desc = "Move down" })
+map({ "n", "x" }, "l", "h", { desc = "Move left" })
+map({ "n", "x" }, "ù", "l", { desc = "Move right" })
+map({ "n", "x" }, "L", "b", { desc = "Move left by word" })
+map({ "n", "x" }, "%", "w", { desc = "Move right by word" })
+map({ "n", "x" }, "p", "k", { desc = "Move up" })
